@@ -1,0 +1,261 @@
+/* ============================================================
+   Buddy4Study Design System — Foundations
+   Source of truth: tailwind.config.ts + src/index.css from the
+   internal Scholarship Builder v4 codebase.
+
+   The product describes itself as: "Calm, premium, structured.
+   Whitespace over borders. HSL only."
+   ============================================================ */
+
+/* ---------- Webfont ----------
+   Inter is loaded from Google Fonts in the host product
+   (weights 400/500/600/700). Mirror that here. */
+@import url("https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap");
+
+:root {
+  /* =========================================================
+     COLOR — written as HSL channels so they compose with
+     hsl(var(--token) / <alpha>). Mirrors tailwind tokens 1:1.
+     ========================================================= */
+
+  /* Surfaces ----------------------------------------------- */
+  --background:        30 25% 97.5%;   /* page bg, subtle warm tint */
+  --foreground:        222 25% 14%;    /* primary text */
+
+  --surface:           0 0% 100%;       /* cards, sheets, inputs */
+  --surface-muted:     220 20% 97%;     /* hover, secondary surface */
+
+  --card:              0 0% 100%;
+  --card-foreground:   222 25% 14%;
+
+  --popover:           0 0% 100%;
+  --popover-foreground:222 25% 14%;
+
+  /* Brand — warm sienna ------------------------------------ */
+  --primary:           18 55% 33%;     /* #843e21 vibe */
+  --primary-foreground:0 0% 100%;
+  --primary-hover:     18 55% 27%;
+
+  --secondary:           220 16% 96%;
+  --secondary-foreground:222 25% 20%;
+
+  --muted:             220 16% 96%;
+  --muted-foreground:  220 10% 46%;
+
+  --accent:            220 16% 94%;
+  --accent-foreground: 222 25% 20%;
+
+  /* Status — soft, calm, never neon ----------------------- */
+  --success:           152 42% 42%;
+  --success-foreground:0 0% 100%;
+  --success-soft:      152 45% 95%;
+
+  --warning:           38 78% 50%;
+  --warning-foreground:30 40% 12%;
+  --warning-soft:      42 90% 95%;
+
+  --destructive:           0 65% 52%;
+  --destructive-foreground:0 0% 100%;
+  --destructive-soft:      0 75% 96%;
+
+  /* Brand mark accent — only used in the logo / illustrations */
+  --brand-yellow:      48 100% 55%;    /* the star body */
+  --brand-ink:         0 0% 6%;        /* the mortarboard */
+
+  /* Structural -------------------------------------------- */
+  --border:            220 16% 92%;
+  --border-soft:       220 16% 95%;
+  --input:             220 16% 90%;
+  --ring:              18 55% 40%;
+
+  /* Sidebar — slightly cooler than page bg */
+  --sidebar-background:        220 20% 98%;
+  --sidebar-foreground:        222 20% 30%;
+  --sidebar-primary:           18 55% 33%;
+  --sidebar-primary-foreground:0 0% 100%;
+  --sidebar-accent:            220 16% 94%;
+  --sidebar-accent-foreground: 222 25% 20%;
+  --sidebar-border:            220 16% 92%;
+  --sidebar-ring:              18 55% 40%;
+
+  /* =========================================================
+     RADII — one radius across the system. Calm = small.
+     ========================================================= */
+  --radius:    0.25rem;     /*  4px — buttons, inputs, chips */
+  --radius-md: 0.375rem;    /*  6px — menu items, dropdowns */
+  --radius-lg: 0.5rem;      /*  8px — alert blocks, banners */
+  --radius-xl: 0.75rem;     /* 12px — cards, sheets */
+
+  /* =========================================================
+     SHADOWS — almost invisible. Hover lift only.
+     ========================================================= */
+  --shadow-xs: 0 1px 0 0 hsl(220 16% 92% / 0.6);
+  --shadow-sm: 0 1px 2px 0 hsl(222 25% 14% / 0.04),
+               0 1px 1px 0 hsl(222 25% 14% / 0.03);
+  --shadow-md: 0 4px 12px -2px hsl(222 25% 14% / 0.06),
+               0 2px 4px -1px hsl(222 25% 14% / 0.04);
+  --shadow-lg: 0 12px 32px -8px hsl(222 25% 14% / 0.10),
+               0 6px 12px -4px hsl(222 25% 14% / 0.06);
+
+  /* =========================================================
+     SPACING — Tailwind scale +`--space-18` (4.5rem) extension.
+     ========================================================= */
+  --space-1:  0.25rem;  /* 4px  */
+  --space-2:  0.5rem;   /* 8px  */
+  --space-3:  0.75rem;  /* 12px */
+  --space-4:  1rem;     /* 16px */
+  --space-5:  1.25rem;  /* 20px */
+  --space-6:  1.5rem;   /* 24px */
+  --space-8:  2rem;     /* 32px */
+  --space-10: 2.5rem;   /* 40px */
+  --space-12: 3rem;     /* 48px */
+  --space-14: 3.5rem;   /* 56px */
+  --space-18: 4.5rem;   /* 72px  — custom in tailwind.config */
+  --space-20: 5rem;     /* 80px */
+
+  /* Vertical rhythm groups — `stack-*` utilities */
+  --stack-xs: 8px;
+  --stack-sm: 12px;
+  --stack-md: 20px;
+  --stack-lg: 32px;
+  --stack-xl: 48px;
+
+  /* Page container */
+  --page-max:  1120px;
+  --page-pad:  2rem;     /* px-8 */
+  --page-pad-y:2.5rem;   /* py-10 */
+
+  /* =========================================================
+     TYPOGRAPHY — base
+     ========================================================= */
+  --font-sans: "Inter", ui-sans-serif, system-ui, -apple-system,
+               "Segoe UI", Roboto, sans-serif;
+  /* No serif and no monospace in product UI. */
+
+  /* Inter OpenType features actually used in production: */
+  --font-features: "cv02", "cv03", "cv04", "cv11", "ss01";
+
+  /* =========================================================
+     TYPOGRAPHY — semantic tokens (mirror src/index.css)
+
+     The product uses *fixed pixel sizes* per token rather than
+     a t-shirt scale; this preserves the slightly compressed,
+     ops-tool density of the UI.
+     ========================================================= */
+
+  /* Page title — H1 / .text-page-title */
+  --h1-size:   28px;
+  --h1-line:   34px;
+  --h1-weight: 600;
+  --h1-track: -0.01em;
+
+  /* Group title — H2 / .text-group-title */
+  --h2-size:   20px;
+  --h2-line:   28px;
+  --h2-weight: 600;
+  --h2-track: -0.01em;
+
+  /* Section title — H3 / .text-section-title */
+  --h3-size:   18px;
+  --h3-line:   26px;
+  --h3-weight: 600;
+  --h3-track: -0.01em;
+
+  /* Card title — H4 / .text-card-title */
+  --h4-size:   15px;
+  --h4-line:   22px;
+  --h4-weight: 600;
+  --h4-track: -0.01em;
+
+  /* Subsection / eyebrow — uppercase, muted */
+  --eyebrow-size:   12.5px;
+  --eyebrow-line:   18px;
+  --eyebrow-weight: 600;
+  --eyebrow-track:  0.08em;
+
+  /* Body — .text-body */
+  --body-size:    14px;
+  --body-line:    22px;
+  --body-weight:  400;
+
+  /* Helper / caption — .text-helper */
+  --helper-size:    12px;
+  --helper-line:    18px;
+  --helper-weight:  400;
+
+  /* Numeric / tabular — used in tables & inline stats */
+  --numeric-font-variant: tabular-nums;
+}
+
+/* ============================================================
+   SEMANTIC ELEMENT STYLES
+   These mirror the @layer base rules in the host codebase.
+   ============================================================ */
+html {
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-rendering: optimizeLegibility;
+}
+body {
+  background: hsl(var(--background));
+  color: hsl(var(--foreground));
+  font-family: var(--font-sans);
+  font-feature-settings: var(--font-features);
+}
+
+h1, .text-page-title {
+  font-size: var(--h1-size); line-height: var(--h1-line);
+  font-weight: var(--h1-weight); letter-spacing: var(--h1-track);
+  color: hsl(var(--foreground));
+}
+h2, .text-group-title {
+  font-size: var(--h2-size); line-height: var(--h2-line);
+  font-weight: var(--h2-weight); letter-spacing: var(--h2-track);
+  color: hsl(var(--foreground));
+}
+h3, .text-section-title {
+  font-size: var(--h3-size); line-height: var(--h3-line);
+  font-weight: var(--h3-weight); letter-spacing: var(--h3-track);
+  color: hsl(var(--foreground));
+}
+h4, .text-card-title {
+  font-size: var(--h4-size); line-height: var(--h4-line);
+  font-weight: var(--h4-weight); letter-spacing: var(--h4-track);
+  color: hsl(var(--foreground));
+}
+.text-subsection-title, .text-eyebrow {
+  font-size: var(--eyebrow-size); line-height: var(--eyebrow-line);
+  font-weight: var(--eyebrow-weight); letter-spacing: var(--eyebrow-track);
+  color: hsl(var(--muted-foreground));
+  text-transform: uppercase;
+}
+.text-body {
+  font-size: var(--body-size); line-height: var(--body-line);
+  color: hsl(var(--foreground));
+}
+.text-helper {
+  font-size: var(--helper-size); line-height: var(--helper-line);
+  color: hsl(var(--muted-foreground));
+}
+
+/* Soft divider, used everywhere instead of heavy <hr> */
+.divider-soft { border-top: 1px solid hsl(var(--border-soft)); }
+
+/* Page container — consistent max width and rhythm */
+.page-container {
+  margin-inline: auto;
+  width: 100%;
+  max-width: var(--page-max);
+  padding-inline: var(--page-pad);
+  padding-block: var(--page-pad-y);
+}
+
+/* Vertical rhythm groups */
+.stack-xs > * + * { margin-top: var(--stack-xs); }
+.stack-sm > * + * { margin-top: var(--stack-sm); }
+.stack-md > * + * { margin-top: var(--stack-md); }
+.stack-lg > * + * { margin-top: var(--stack-lg); }
+.stack-xl > * + * { margin-top: var(--stack-xl); }
+
+/* Tabular numerics — for tables, KPIs, IDs */
+.tabular-nums { font-variant-numeric: tabular-nums; }
