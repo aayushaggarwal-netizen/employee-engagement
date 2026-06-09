@@ -9,7 +9,11 @@ function makeLibsqlUrl(raw: string) {
 
 function createPrismaClient() {
   const rawUrl = process.env.DATABASE_URL ?? "file:./dev.db";
-  const adapter = new PrismaLibSql({ url: makeLibsqlUrl(rawUrl) });
+  const authToken = process.env.DATABASE_AUTH_TOKEN; // required for Turso, omit for local SQLite
+  const adapter = new PrismaLibSql({
+    url: makeLibsqlUrl(rawUrl),
+    ...(authToken ? { authToken } : {}),
+  });
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   return new PrismaClient({ adapter } as any);
 }

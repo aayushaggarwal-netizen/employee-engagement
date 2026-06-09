@@ -4,7 +4,8 @@ import { PrismaLibSql } from "@prisma/adapter-libsql";
 
 const rawUrl = process.env.DATABASE_URL || "file:./dev.db";
 const libsqlUrl = rawUrl.startsWith("file:./") ? rawUrl.replace("file:./", "file:") : rawUrl;
-const adapter = new PrismaLibSql({ url: libsqlUrl });
+const authToken = process.env.DATABASE_AUTH_TOKEN;
+const adapter = new PrismaLibSql({ url: libsqlUrl, ...(authToken ? { authToken } : {}) });
 const prisma = new PrismaClient({ adapter } as any);
 
 async function main() {
