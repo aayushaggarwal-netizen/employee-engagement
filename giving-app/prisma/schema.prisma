@@ -1,0 +1,150 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+}
+
+model User {
+  id          String   @id @default(cuid())
+  email       String   @unique
+  name        String
+  department  String   @default("General")
+  role        String   @default("EMPLOYEE")
+  status      String   @default("Active")
+  joinedAt    DateTime @default(now())
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  otpCodes    OtpCode[]
+  donations   Donation[]
+  nominations Nomination[]
+  sessions    Session[]
+}
+
+model OtpCode {
+  id        String   @id @default(cuid())
+  userId    String
+  code      String
+  expiresAt DateTime
+  used      Boolean  @default(false)
+  createdAt DateTime @default(now())
+
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
+
+model Session {
+  id        String   @id @default(cuid())
+  userId    String
+  token     String   @unique
+  expiresAt DateTime
+  createdAt DateTime @default(now())
+
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
+
+model Program {
+  id             String   @id @default(cuid())
+  name           String
+  orgName        String
+  tagline        String
+  mission        String
+  goal           Int
+  raised         Int      @default(0)
+  donors         Int      @default(0)
+  scholarsFunded Int      @default(0)
+  nominations    Int      @default(0)
+  avgGift        Int      @default(0)
+  status         String   @default("DRAFT")
+  category       String   @default("General")
+  startDate      DateTime
+  endDate        DateTime
+  maxScholars    Int      @default(50)
+  eligibility    String   @default("[]")
+  howItWorks     String   @default("[]")
+  payrollCap     Int      @default(25000)
+  createdAt      DateTime @default(now())
+  updatedAt      DateTime @updatedAt
+
+  donationsList  Donation[]
+  nominationsList Nomination[]
+  scholars       Scholar[]
+  disbursements  Disbursement[]
+}
+
+model Donation {
+  id        String   @id @default(cuid())
+  userId    String
+  programId String
+  amount    Int
+  type      String
+  status    String   @default("ACTIVE")
+  anonymous Boolean  @default(false)
+  want80G   Boolean  @default(true)
+  honour    String?
+  frequency String?
+  startDate DateTime @default(now())
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  user      User    @relation(fields: [userId], references: [id], onDelete: Cascade)
+  program   Program @relation(fields: [programId], references: [id], onDelete: Cascade)
+}
+
+model Nomination {
+  id           String   @id @default(cuid())
+  userId       String
+  programId    String
+  nomineeName  String
+  nomineeEmail String
+  nomineePhone String
+  relationship String
+  reason       String
+  status       String   @default("SUBMITTED")
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+
+  user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  program      Program  @relation(fields: [programId], references: [id], onDelete: Cascade)
+  scholar      Scholar?
+}
+
+model Scholar {
+  id                String   @id @default(cuid())
+  name              String
+  college           String
+  course            String
+  year              String
+  hometown          String
+  programId         String
+  nominationId      String?  @unique
+  totalAmount       Int      @default(0)
+  disbursedAmount   Int      @default(0)
+  nextDisbursement  DateTime?
+  utilizationStatus String   @default("Pending update")
+  notes             String?
+  createdAt         DateTime @default(now())
+  updatedAt         DateTime @updatedAt
+
+  program       Program      @relation(fields: [programId], references: [id], onDelete: Cascade)
+  nomination    Nomination?  @relation(fields: [nominationId], references: [id])
+  disbursements Disbursement[]
+}
+
+model Disbursement {
+  id            String   @id @default(cuid())
+  scholarId     String
+  programId     String
+  tranche       Int      @default(1)
+  amount        Int
+  scheduledDate DateTime
+  status        String   @default("SCHEDULED")
+  note          String?
+  releasedAt    DateTime?
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+
+  scholar   Scholar @relation(fields: [scholarId], references: [id], onDelete: Cascade)
+  program   Program @relation(fields: [programId], references: [id], onDelete: Cascade)
+}
