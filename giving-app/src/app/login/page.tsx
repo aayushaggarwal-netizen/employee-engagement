@@ -29,7 +29,9 @@ export default function LoginPage() {
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ email }),
       });
-      const data = await res.json();
+      const text = await res.text();
+      let data: { error?: string; code?: string; success?: boolean } = {};
+      try { data = JSON.parse(text); } catch { setError(`Server error (${res.status}). Check Vercel logs.`); return; }
       if (!res.ok) { setError(data.error || "Failed to send OTP"); return; }
       if (data.code) setDevCode(data.code);
       setStep("otp");
