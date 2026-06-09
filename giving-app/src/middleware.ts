@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 
-const PUBLIC_PATHS = ["/login", "/api/auth/send-otp", "/api/auth/verify-otp"];
+const PUBLIC_PATHS = ["/login", "/api/auth/send-otp", "/api/auth/verify-otp", "/api/seed"];
 const SESSION_COOKIE = "giving_session";
 
 export function middleware(request: NextRequest) {
