@@ -1,6 +1,10 @@
 import { NextRequest, NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
 
+export async function GET(req: NextRequest) {
+  return POST(req);
+}
+
 export async function POST(req: NextRequest) {
   const secret = req.nextUrl.searchParams.get("secret");
   if (!secret || secret !== process.env.SEED_SECRET) {
